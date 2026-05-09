@@ -38,22 +38,6 @@ export const portfolioData = {
       demoLink: "#",
       githubLink: "#",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      title: "Task Management App",
-      description: "A collaborative task management tool with real-time updates using WebSockets.",
-      techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Socket.io"],
-      demoLink: "#",
-      githubLink: "#",
-      image: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      title: "Social Media Dashboard",
-      description: "An analytics dashboard providing insights on social media engagement, with complex data visualization.",
-      techStack: ["React", "Chart.js", "Express", "PostgreSQL"],
-      demoLink: "#",
-      githubLink: "#",
-      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     }
   ],
   experience: [

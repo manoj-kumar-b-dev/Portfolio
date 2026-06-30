@@ -13,7 +13,7 @@ const Hero = ({ data }) => {
           className="flex-1 text-center md:text-left"
         >
           <span className="text-[var(--accent)] font-semibold tracking-wider uppercase text-sm mb-4 block">
-            Welcome to my world
+            Welcome to my portfolio website
           </span>
           <h1 className="text-5xl md:text-7xl font-extrabold text-[var(--text-primary)] leading-tight mb-6">
             Hi, I'm <span className="text-[var(--accent)]">{data.name}</span>

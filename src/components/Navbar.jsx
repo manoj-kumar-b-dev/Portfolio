@@ -38,11 +38,10 @@ const Navbar = ({ heroName }) => {
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
           ? 'bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-md shadow-sm'
           : 'bg-transparent'
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -53,7 +52,7 @@ const Navbar = ({ heroName }) => {
             className="flex-shrink-0 cursor-pointer"
           >
             <Link to="home" smooth={true} duration={500} className="text-2xl font-bold tracking-tighter text-[var(--accent)]">
-              {heroName ? heroName.split(' ')[0] : 'Dev'}<span className="text-[var(--text-primary)]">.</span>
+              {heroName ? heroName.split(' ')[0] : 'Dev'}<span className="text-[var(--text-primary)]"></span>
             </Link>
           </motion.div>
 

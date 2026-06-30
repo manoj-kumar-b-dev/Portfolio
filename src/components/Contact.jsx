@@ -1,21 +1,38 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FiMail, FiGithub, FiLinkedin, FiSend } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMail, FiGithub, FiLinkedin, FiSend, FiCheckCircle, FiAlertCircle, FiLoader } from 'react-icons/fi';
 
 const Contact = ({ data }) => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(''); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Placeholder submission logic
-    setStatus('Sending...');
-    setTimeout(() => {
-      setStatus('Message sent successfully!');
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Failed to send message.');
+      }
+
+      setStatus('success');
       setFormData({ name: '', email: '', message: '' });
-    }, 1500);
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err.message || 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -106,12 +123,50 @@ const Contact = ({ data }) => {
               </div>
               <button
                 type="submit"
-                className="w-full flex items-center justify-center space-x-2 bg-[var(--accent)] text-white px-6 py-4 rounded-xl font-bold hover:bg-[var(--accent-hover)] transition-colors shadow-lg shadow-[var(--accent)]/30"
+                disabled={status === 'loading'}
+                className="w-full flex items-center justify-center space-x-2 bg-[var(--accent)] text-white px-6 py-4 rounded-xl font-bold hover:bg-[var(--accent-hover)] transition-all shadow-lg shadow-[var(--accent)]/30 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <span>Send Message</span>
-                <FiSend />
+                {status === 'loading' ? (
+                  <>
+                    <FiLoader className="animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <FiSend />
+                  </>
+                )}
               </button>
-              {status && <p className="text-center font-medium mt-4 text-[var(--accent)]">{status}</p>}
+
+              <AnimatePresence mode="wait">
+                {status === 'success' && (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center space-x-2 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-500"
+                  >
+                    <FiCheckCircle size={20} className="shrink-0" />
+                    <p className="font-medium">Message sent! I'll get back to you soon.</p>
+                  </motion.div>
+                )}
+                {status === 'error' && (
+                  <motion.div
+                    key="error"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center space-x-2 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500"
+                  >
+                    <FiAlertCircle size={20} className="shrink-0" />
+                    <p className="font-medium">{errorMsg}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
           </motion.div>
         </div>

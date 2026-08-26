@@ -16,7 +16,7 @@ const navLinks = [
 const Navbar = ({ heroName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const [activeSection, setActiveSection] = useState('home');
 
   /* ── Theme toggle ── */

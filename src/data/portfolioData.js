@@ -11,7 +11,7 @@ import resumePdf from '../assets/resume.pdf';
 
 export const portfolioData = {
   hero: {
-    name: "Manoj Kumar",
+    name: "Manoj Kumar B",
     title: "Full Stack Developer",
     tagline: "Full Stack Developer building modern, responsive web applications with React, Node.js, Express.js, MongoDB, and TypeScript.",
     image: profileImg,

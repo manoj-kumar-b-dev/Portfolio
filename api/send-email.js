@@ -1,6 +1,4 @@
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   // Only allow POST
@@ -8,18 +6,34 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, message } = req.body;
+  const { name, email, message } = req.body || {};
 
   // Basic validation
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields are required.' });
   }
 
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
+  const user = process.env.SMTP_USER || 'manojkumarb.2305@gmail.com';
+  const pass = (process.env.SMTP_PASS || 'uzvx eyvw qwrg kizc').replace(/\s+/g, '');
+  const toEmail = process.env.TO_EMAIL || user;
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465, // true for port 465, false for 587
+    auth: {
+      user,
+      pass,
+    },
+  });
+
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'Portfolio Contact <onboarding@resend.dev>', // Use your verified domain once set up
-      to: [process.env.TO_EMAIL],                        // Your email address
+    const info = await transporter.sendMail({
+      from: `"${name}" <${user}>`,
       replyTo: email,
+      to: toEmail,
       subject: `New message from ${name} — Portfolio Contact`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9fafb; border-radius: 12px;">
@@ -39,14 +53,10 @@ export default async function handler(req, res) {
       `,
     });
 
-    if (error) {
-      console.error('Resend error:', error);
-      return res.status(500).json({ error: 'Failed to send email. Please try again.' });
-    }
-
-    return res.status(200).json({ success: true, id: data.id });
+    return res.status(200).json({ success: true, messageId: info.messageId });
   } catch (err) {
-    console.error('Unexpected error:', err);
-    return res.status(500).json({ error: 'An unexpected error occurred.' });
+    console.error('SMTP Error:', err);
+    return res.status(500).json({ error: err.message || 'Failed to send email. Please try again.' });
   }
 }
+

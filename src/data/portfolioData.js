@@ -7,15 +7,15 @@ import profileImg from '../assets/profileImg.png';
 import vizoraImg from '../assets/vizora.png';
 import reqforgeImg from '../assets/reqforge.png';
 import shopflowImg from '../assets/shopflow.png';
-import resumePdf from '../assets/resume.pdf';
 
+const resumeUrl = "https://cpcxvtevjvswlsacymap.supabase.co/storage/v1/object/public/resume/Manoj-Kumar-Resume.pdf"
 export const portfolioData = {
   hero: {
     name: "Manoj Kumar B",
     title: "Full Stack Developer",
     tagline: "Full Stack Developer building modern, responsive web applications with React, Node.js, Express.js, MongoDB, and TypeScript.",
     image: profileImg,
-    resumeUrl: resumePdf
+    resumeUrl
   },
   about: {
     description: "I'm a Full Stack Developer and BCA graduate specializing in the MERN stack and TypeScript. I build responsive, real-world web applications with a focus on clean code, intuitive user experiences, and scalable solutions. I've built and deployed projects including AI analytics platforms, API development tools, and e-commerce applications."
